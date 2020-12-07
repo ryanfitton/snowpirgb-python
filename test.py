@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 # NeoPixel library strandtest example
 # Author: Tony DiCola (tony@tonydicola.com)
-# Modified for SnowPi RGB by @Ryanteck
-# Modified for CheerLights API by @ryanfitton - Using code used from: https://github.com/feiticeir0/cheerlights
 #
 # Direct port of the Arduino NeoPixel library strandtest example.  Showcases
 # various animations on a strip of NeoPixels.
-#
-#
+
 # Usage for SnowPi:
 # Requires:
 #  - PIP (sudo apt install python3-pip)
@@ -23,14 +20,13 @@
 # More configurable options:
 # - Clear the current display: sudo python3 demo.py -c
 # - Set the brightness, pass an integer for the brighness: sudo python3 demo.py -b 85
-#
-# Start on Pi start-up - Add to root user crontab:
-# sudo crontab -e
-# @reboot /usr/bin/python /home/pi/snowpirgb-python/demo.py -cheer &
 
+
+
+#Modified for SnowPi RGB by @Ryanteck
 
 import time
-from rpi_ws281x import PixelStrip, Color
+
 import requests
 import argparse
 
@@ -44,7 +40,7 @@ LED_BRIGHTNESS = 100  # Set to 0 for darkest and 255 for brightest
 LED_INVERT = False    # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
-# If you need proxy configurations:
+# If you need proxy
 PROXIES = {
 	'http': '<proxy_address>:<port>',
 	'https': '<proxy_address>:<port>'
@@ -122,23 +118,25 @@ def theaterChaseRainbow(strip, wait_ms=50):
                 strip.setPixelColor(i + q, 0)
 
 
-def cheerLights(strip):
+def cheerLights():
     """Connect to the CheerLights API and use latest colour value."""
-    # With proxy
+    # with proxy
     #req = requests.get("http://api.thingspeak.com/channels/1417/field/2/last.json", timeout=2,proxies=PROXIES)
-    # Without proxy
+    # without proxy
     req = requests.get("http://api.thingspeak.com/channels/1417/field/2/last.json", timeout=2)
     # Convert HEX code to RGB values
     r, g, b = hex_to_rgb(req.json()["field2"])
     # Loop through LEDs and change values
-    for i in range(strip.numPixels()):
-        strip.setPixelColor(i, r, g, b)
-        strip.show()
+  #  for i in range(strip.numPixels()):
+    #    strip.setPixelColor(i, r, g, b)
+   #     strip.show()
         # Wipe effect
         #ime.sleep(wait_ms / 1000.0)
     # Wait 10s before another request to the API - be friendly
+    print(r)
+    print(g)
+    print(b)
     time.sleep(10)
-
 
 # Main program logic follows:
 if __name__ == '__main__':
@@ -157,9 +155,9 @@ if __name__ == '__main__':
         LED_BRIGHTNESS = args.b
 
     # Create NeoPixel object with appropriate configuration.
-    strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+    #strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
     # Intialize the library (must be called once before other functions).
-    strip.begin()
+    #strip.begin()
 
     print('Press Ctrl-C to quit.')
     if not args.clear:
@@ -194,7 +192,7 @@ if __name__ == '__main__':
                 rainbow(strip)
                 rainbowCycle(strip)
             if args.cheer:
-                cheerLights(strip)
+                cheerLights()
 
 
     except KeyboardInterrupt:
