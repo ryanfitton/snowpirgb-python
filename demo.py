@@ -132,7 +132,7 @@ def cheerLights(strip):
     r, g, b = hex_to_rgb(req.json()["field2"])
     # Loop through LEDs and change values
     for i in range(strip.numPixels()):
-        strip.setPixelColor(i, r, g, b)
+        strip.setPixelColor(i, Color(r, g, b))
         strip.show()
         # Wipe effect
         #ime.sleep(wait_ms / 1000.0)
